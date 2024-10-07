@@ -3,7 +3,7 @@ pipeline {
     environment {
         GITNAME = 'HyunmoBae'
         GITEMAIL = 'tsi0520@naver.com'
-        GITWEBADD = 'https://github.com/HyunmoBae/bookstore.git'
+        GITWEBADD = 'https://github.com/HyunmoBae/bookstore-project.git'
         GITSSHADD = 'git@github.com:HyunmoBae/bookstore-eks-deploy.git'
         GITCREDENTIAL = 'git_cre'
         AWSCREDENTIAL = 'aws_cre'
