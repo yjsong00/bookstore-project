@@ -1,0 +1,65 @@
+.body {
+    background-color: #f4f6f9; /* 부드러운 배경색 */
+    font-family: 'Arial', sans-serif; /* 기본 폰트 설정 */
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px;
+    background-color: #ffffff; /* 흰색 배경 */
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+    max-width: 400px;
+    width: 90%; /* 너비 조정 */
+    margin: auto; /* 중앙 정렬 */
+}
+
+.title {
+    font-size: 2rem;
+    color: #2c3e50; /* 짙은 색상 */
+    margin-bottom: 20px;
+}
+
+.label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #34495e; /* 부드러운 색상 */
+}
+
+.input {
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #bdc3c7; /* 테두리 색상 */
+    border-radius: 4px;
+    width: 100%;
+    transition: border-color 0.3s; /* 테두리 색상 변화 추가 */
+}
+
+.input:focus {
+    border-color: #3498db; /* 포커스 시 테두리 색상 변화 */
+    outline: none; /* 아웃라인 제거 */
+}
+
+.button {
+    padding: 12px;
+    background-color: #3498db; /* 버튼 배경 색상 */
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease; /* 전환 효과 추가 */
+}
+
+.button:hover {
+    background-color: #2980b9; /* hover 시 색상 변화 */
+    transform: translateY(-2px); /* 마우스 올릴 시 약간 위로 */
+}
+
+.error {
+    color: #e74c3c; /* 에러 메시지 색상 */
+    margin-bottom: 10px;
+    text-align: center; /* 중앙 정렬 */
+}

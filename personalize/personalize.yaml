@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: per-dep
+  name: per-dep
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: per
+  template:
+    metadata:
+      labels:
+        app: per
+    spec:
+      containers:
+        - image: 178020491921.dkr.ecr.ap-northeast-2.amazonaws.com/personalize:5
+          name: personalize
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: personalize-svc
+spec:
+  selector:
+    app: per
+  ports:
+    - port: 5000
+      targetPort: 5000
