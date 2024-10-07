@@ -75,7 +75,7 @@ def retrieve_endpoint():
     query = data.get('query')
     isKeyword = data.get('keyword')
     numberOfResults = data.get('numberOfResults', 3)  # 기본값 3으로 설정
-    kbId = 'VCDBETK4KL'  # 지식 기반 ID를 직접 설정
+    kbId = '4HDM46SNYR'  # 지식 기반 ID를 직접 설정
     modelArn = 'arn:aws:bedrock:ap-northeast-1::foundation-model/anthropic.claude-3-haiku-20240307-v1:0'  # 모델 ARN
     
     if not query:
