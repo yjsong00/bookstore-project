@@ -6,7 +6,7 @@ import re
 app = Flask(__name__)
 CORS(app)
 
-# Bedrock 클라이언트 초기화하기
+# Bedrock 클라이언트 초기화
 bedrock_agent_runtime = boto3.client('bedrock-agent-runtime', region_name='ap-northeast-1')
 
 def retrieve_and_generate_keyword(query, kbId, modelArn, numberOfResults, keywordPromptTemplate):
