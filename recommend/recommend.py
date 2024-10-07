@@ -6,7 +6,7 @@ import re
 app = Flask(__name__)
 CORS(app)
 
-# Bedrock 클라이언트 초기화하기22
+# Bedrock 클라이언트 초기화하기
 bedrock_agent_runtime = boto3.client('bedrock-agent-runtime', region_name='ap-northeast-1')
 
 def retrieve_and_generate_keyword(query, kbId, modelArn, numberOfResults, keywordPromptTemplate):
@@ -105,7 +105,7 @@ def retrieve_endpoint():
 창의적이고 다양한 방식으로 책방을 소개해주세요. 각 책방의 고유한 특징과 매력을 강조하여 설명해주세요.
 """
     
-    # 쿼리 기반 한국어로 된 사용자 정의 프롬프트 템플릿aaa
+    # 쿼리 기반 한국어로 된 사용자 정의 프롬프트 템플릿
     queryPromptTemplate = f"""
 당신은 책방을 찾아주는 도우미입니다. 다음 요구사항에 맞는 책방을 찾아주세요: "{query}"
 
