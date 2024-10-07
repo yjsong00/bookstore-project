@@ -97,19 +97,16 @@ def buildAndDeployService(String serviceName) {
 
         // Build Docker Image
         sh "docker build --no-cache -t ${awsecr}:${nextTag} ."
-        sh "docker tag ${awsecr}:${nextTag} ${awsecr}:latest"
         
         // Push Docker Image
         script {
             docker.withRegistry("https://${awsecr}", "ecr:${REGION}:${AWSCREDENTIAL}") {
                 docker.image("${awsecr}:${nextTag}").push()
-                docker.image("${awsecr}:latest").push()
             }
         }
         
         // Clean up Docker images
         sh "docker image rm -f ${awsecr}:${nextTag}"
-        sh "docker image rm -f ${awsecr}:latest"
         
         // Update EKS manifest
         dir('../') {  // Move back to root directory
