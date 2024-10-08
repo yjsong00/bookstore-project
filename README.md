@@ -41,7 +41,7 @@ cat /var/lib/jenkins/secrets/initialAdminPassword 으로 비밀번호 확인 후
 
 ## 플러그인 설치
 
-Docker, Docker Pipeline, Publish Over SSH, , AWS Credentials, Amazon ECR, Generic Webhook Trigger Plugin 플러그인 설치
+Docker, Docker Pipeline, Publish Over SSH, , AWS Credentials, Amazon ECR, AWS Steps, Generic Webhook Trigger Plugin 플러그인 설치
 설치가 끝나고 실행중인 작업이 없으면 Jenkins 재시작 <- 체크확인
 
 ## Credential 설정
