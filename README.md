@@ -2,13 +2,11 @@
 
 ## 구조
 
-1. 로컬에서 각 서비스 폴더에 git init을 통해 저장소 생성 후, git branch로 해당서비스 브랜치 생성 및 add,commit,push로 github에 저장
-   (add, commit을 해야 기본브랜치가 생긴다. 그 뒤에 서비스브랜치 생성 후 git switch [브랜치명])
+1. main -> develop -> feature/<해당기능> 으로 뻗어나가며, 순차적 pr을 통해 merge한다.
 
-2. 각 서비스폴더에는 Jenkinsfile, Dockerfile, 서비스.py 등 파일이 존재하고 개발 후 bookstore로 push를 통해서 해당 브랜치에 update
-   (서비스폴더의 README.md에 태그에 따라 수정내용 작성)
+2. 각 서비스폴더에는 Dockerfile, 서비스.py 등 파일이 존재하고 개발 후 feature/<해당기능> 브랜치로 push하여 pr 생성
 
-3. webhook을 통해 Jenkins로 요청을 보내고 Jenkins에서는 multiple pipeline의 수정된 브랜치의 pipeline 작동. (ECR의 해당 repository로 push)
+3. main브랜치로 merge되면 webhook을 통해 Jenkins로 요청을 보내며 pipeline 작동. (ECR 및 deploy repository로 push)
 
 ## Jenkins 인스턴스 생성.
 
@@ -43,7 +41,7 @@ cat /var/lib/jenkins/secrets/initialAdminPassword 으로 비밀번호 확인 후
 
 ## 플러그인 설치
 
-Docker, Docker Pipeline, Publish Over SSH, , AWS Credentials, Amazon ECR, Slack Notification(선택사항) 플러그인 설치
+Docker, Docker Pipeline, Publish Over SSH, , AWS Credentials, Amazon ECR, Generic Webhook Trigger Plugin 플러그인 설치
 설치가 끝나고 실행중인 작업이 없으면 Jenkins 재시작 <- 체크확인
 
 ## Credential 설정
@@ -54,22 +52,37 @@ Global -> Add credential -> Username with password에서 git_cre 생성
 
 ## item 만들기
 
-이름작성 후 multiple pipeline 선택(나의 경우는 bookstore)
-Branch Sources -> github
-credentials, repository URL 지정
--> 한개의 github repository에서 각 서비스들을 브랜치로 분리해서 관리할 것이다. (recommend, reservation ...)
+이름작성 후 단일 pipeline 선택(나의 경우는 bookstore-project)
+GitHub project 클릭후 repository URL 지정
+Build Triggers의 Generic Webhook Trigger 지정 (나의경우 main 브랜치에 merged되면 파이프라인 실행)
 
+Post content parameters에 2개의 파라미터 추가
+각 파라미터 (변수명, 조건식)
+variable : (IF_MERGED, BRANCH)
+Expression : ($.pull_request.merged, $.pull_request.base.ref)
+
+Token에 bookstore입력.(자유)
+-> 해당 Token에 넣은 값을 webhook주소에 추가해줘야함.
+ex) 나의경우는 bookstore를 넣었으니 github의 webhook url은 다음과 같음
+http://jenkins.taehyun35802.shop:8080/generic-webhook-trigger/invoke?token=bookstore
 
 ## github 준비
 
 github에서 repository만들고, 해당 리포지토리에 webhook추가
 
-- Payload URL : 젠킨스주소:8080/github-webhook/
+- Payload URL : 젠킨스주소:8080/generic-webhook-trigger/invoke?token=bookstore
 
 ## 시작
 
-로컬에서 변경사항 수정후 git add, commit, push를 통해 github의 해당서비스의 브랜치로 커밋
--> github에서 push된 브랜치만 Jenkins의 multiple pipeline의 해당 브랜치의 파이프라인 작동
+1. 로컬에서 develop 브랜치를 pull이나 clone 해온 뒤, 수정할 기능 브랜치를 생성
+   ex) git pull origin develop후 git checkout -b feature/recommend (해당 브랜치를 만들고 switch)
 
-ex) recommend 브랜치 수정후 push -> Jenkins multiple pipeline로 webhook 후
-recommend 브랜치 pipeline 작동 (ecr recommend repository로 새 tag를 만들고 push한다.)
+2. 해당 기능에 대해 수정 후 해당 리포지토리의 feature/<해당기능> 으로 push
+   ex) git push origin feature/recommend (이러면 해당 repository에 feature/recommend라는 브랜치가 만들어짐)
+
+3. github에서 pull&request를 생성해서 feature/recommend 브랜치에서 develop브랜치로 pr 요청. (feature/recommend > develop으로 merge요청)
+
+4. 리뷰어가 변경사항 확인 후 merge승인 (develop > main 도 마찬가지)
+
+5. pr을 통해 develop에서 main으로 merge승인이 날 시, 위의 Jenkins에서 설정해놓은 조건식에 의해 main브랜치의 Jenkinsfile실행.
+   -> 변경사항이 있는 폴더만 이미지를 다시 빌드하고, push작업을 실시
