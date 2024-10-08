@@ -82,13 +82,6 @@ pipeline {
 def buildAndDeployService(String serviceName) {
     def awsecr = "${ECR_BASE}/${serviceName}"
     dir(serviceName) {
-        // Simple Git cleanup
-        sh """
-            git rm -r --cached .
-            git add .
-            git commit -m "Remove unnecessary files from Git tracking for ${serviceName}"
-        """
-
         // Get the latest tag and increment it
         def latestTag = sh(
             script: "aws ecr describe-images --repository-name ${serviceName} --query 'sort_by(imageDetails,& imagePushedAt)[-1].imageTags[0]' --output text",
@@ -115,14 +108,28 @@ def buildAndDeployService(String serviceName) {
         // Clean up Docker images
         sh "docker image rm -f ${awsecr}:${nextTag}"
         
-        // Update EKS manifest
+        // Update EKS manifest and clean up Git repository
         dir('../') {  // Move back to root directory
             git credentialsId: GITCREDENTIAL, url: GITSSHADD, branch: 'main'
+            
             sh "git config --global user.email ${GITEMAIL}"
             sh "git config --global user.name ${GITNAME}"
-            sh "sed -i 's@${awsecr}:.*@${awsecr}:${nextTag}@g' ${serviceName}/${serviceName}.yaml"
+            
+            // Clean up unnecessary files
+            sh "git rm -r --cached ."
             sh "git add ."
+            sh """
+                if ! git diff --cached --quiet; then
+                    git commit -m 'Remove unnecessary files from Git tracking for ${serviceName}'
+                fi
+            """
+
+            // Update EKS manifest
+            sh "sed -i 's@${awsecr}:.*@${awsecr}:${nextTag}@g' ${serviceName}/${serviceName}.yaml"
+            sh "git add ${serviceName}/${serviceName}.yaml"
             sh "git commit -m 'Update ${serviceName} to ${nextTag}'"
+            
+            // Push changes
             sh "git push origin main"
         }
     }
