@@ -82,6 +82,13 @@ pipeline {
 def buildAndDeployService(String serviceName) {
     def awsecr = "${ECR_BASE}/${serviceName}"
     dir(serviceName) {
+        // Simple Git cleanup
+        sh """
+            git rm -r --cached .
+            git add .
+            git commit -m "Remove unnecessary files from Git tracking for ${serviceName}"
+        """
+
         // Get the latest tag and increment it
         def latestTag = sh(
             script: "aws ecr describe-images --repository-name ${serviceName} --query 'sort_by(imageDetails,& imagePushedAt)[-1].imageTags[0]' --output text",
