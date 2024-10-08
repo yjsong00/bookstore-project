@@ -3,9 +3,6 @@ import "./../app/globals.css";
 import Script from "next/script";
 import axios from "axios";
 import { NavComponent } from "./../components/nav";
-import Image from "next/image";
-import book from "./../static/book.png";
-import movie from "./../static/movie.gif";
 import { useAuth } from "./../hooks/useAuth";
 import React, { useState, useEffect, useRef } from "react";
 import { BiSearch } from "react-icons/bi";
@@ -13,12 +10,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Bookstore } from "../pages/app";
 import BookstoreListSkeleton from "./../components/BookstoreListSkeleton";
 import Gradient from "./../components/gradient";
-import NetflixStyleSlider from '../components/NetflixStyleSlider';
+import NetflixStyleSlider from "../components/NetflixStyleSlider";
+import BookstoreInfo from "../components/bookstorelist"
+import ViewDetailPage from "../components/viewDetail";
 
-
-
-// import HowTo from "../static/";
-// import Video from "next/video"; // 비디오 컴포넌트를 사용하기 위해 import
 
 const instance_ai = axios.create({
   baseURL: "https://www.taehyun35802.shop",
@@ -119,7 +114,6 @@ const HomeClient: React.FC = () => {
 
   // const imageUrl = getImage();
 
-
   const getImages = async () => {
     const imageUrls = [
       "https://bookstoreimage-bucket.s3.ap-northeast-2.amazonaws.com/bookstoreimage-1.jpg",
@@ -132,11 +126,10 @@ const HomeClient: React.FC = () => {
       "https://bookstoreimage-bucket.s3.ap-northeast-2.amazonaws.com/bookstoreimage-8.jpg",
       "https://bookstoreimage-bucket.s3.ap-northeast-2.amazonaws.com/bookstoreimage-9.jpg",
       "https://bookstoreimage-bucket.s3.ap-northeast-2.amazonaws.com/bookstoreimage-10.jpg",
-      
+
       // 추가 이미지
       // 필요한 만큼 추가
     ];
-
 
     try {
       const promises = imageUrls.map(async (url) => {
@@ -155,18 +148,39 @@ const HomeClient: React.FC = () => {
     }
   };
 
-
+  
   const getFacilityInfo = (
     ID: string
-  ): { name: string | null; description: string | null } => {
+  ): { FCLTY_NM: string | null; OPTN_DC: string | null } => {
     const foundBookstore = bookstoreList.find(
       (bookstore) => bookstore.ESNTL_ID === ID
     );
     return {
-      name: foundBookstore ? foundBookstore.FCLTY_NM : null,
-      description: foundBookstore ? foundBookstore.OPTN_DC : null,
+      FCLTY_NM: foundBookstore ? foundBookstore.FCLTY_NM : null,
+      OPTN_DC: foundBookstore ? foundBookstore.OPTN_DC : null,
+
     };
   };
+
+  // useEffect(()=>{
+  //   const getBookInfo = (
+  //     ID: string
+  //   ): { Bookstore: Bookstore | null } => {
+  //     const foundBookstore = bookstoreList.find(
+  //       (bookstore) => bookstore.ESNTL_ID === ID
+  //     );
+  //     return {
+  //       Bookstore: foundBookstore || null
+  //     };
+  //   };
+
+  //   console.log(getBookInfo('KCCBSPO22N000000455'))
+  // },[])
+
+
+
+
+
 
   const toggleCategory = (category: string) => {
     setSelectedCategories((prev) =>
@@ -218,7 +232,7 @@ const HomeClient: React.FC = () => {
   };
 
   const PersonalizeUrl = "/get-recommendations";
-  
+
   const Personalize = async () => {
     const personalizeparam = {
       userId: userInfo ? userInfo.email : "사용자 이메일 주소",
@@ -234,7 +248,6 @@ const HomeClient: React.FC = () => {
 
       setPersonalizedRecommendations(result);
       console.log(isPersonalizeLoading);
-    
     } catch (error) {
       console.error("Error fetching personalized recommendations:", error);
     } finally {
@@ -287,13 +300,15 @@ const HomeClient: React.FC = () => {
     Personalize();
   }, []);
 
+
+
   // useEffect(() => {
   //   const fetchImage = async () => {
   //     const imageUrl = await getImage();
   //     setImageSrc(imageUrl);
   //   };
   //   fetchImage();
-    
+
   // }, []);
 
   useEffect(() => {
@@ -304,15 +319,12 @@ const HomeClient: React.FC = () => {
     fetchImages();
   }, []);
 
-
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.load(); // Ensure the video is loaded
       videoRef.current.play(); // Attempt to play the video automatically
     }
   }, []);
-
-
 
   return (
     <>
@@ -373,9 +385,8 @@ const HomeClient: React.FC = () => {
                   <div className="absolute flex items-center justify-center w-full h-full">
                     <div className="container flex gap-4 flex-col md:flex-row md:justify-between items-center mx-auto w-[90%] md:w-[80%]">
                       <div className="flex flex-col justify-center md:w-1/2 w-full md:text-left text-center">
-                        <h1 className="pt-0.5" >오늘의 책방
-                        </h1>
-                        <div className="pb-4 pr-2 font-light text-base hidden md:block" >
+                        <h1 className="pt-0.5">오늘의 책방</h1>
+                        <div className="pb-4 pr-2 font-light text-base hidden md:block">
                           <p className="style={{paddingBottom: `clamp(3rem, 5vw, 4.2rem)`}}">
                             당신의 일상에 새로움을 더하는 문화의 장
                           </p>
@@ -385,7 +396,7 @@ const HomeClient: React.FC = () => {
                           <AnimatePresence mode="wait">
                             {!aiClick ? (
                               <motion.button
-                                className=" md:shadow-lg bookButton w-60 py-3 font-semibold text-xl md:left-0 ml-auto mr-auto left-0 right-0" // Ensure absolute positioning
+                                className=" md:shadow-lg bookButton w-60 py-3 font-semibold text-xl md:left-0 ml-auto mr-auto left-0 right-0 border-b border-gray-500 hover:border-gray-400 active:border-0 dark:border-gray-600" // Ensure absolute positioning
                                 onClick={() => setAiClick(true)}
                                 variants={buttonVariants}
                                 initial="initial"
@@ -468,13 +479,18 @@ const HomeClient: React.FC = () => {
                                   <ul className="z-[100] divide-y divide-white py-4 px-4 w-full rounded-2xl max-h-[600px] overflow-y-auto box-extrude">
                                     {aiList.map((datas, index) => (
                                       <React.Fragment key={datas.FCLTY_NM}>
+
+
+{/* <ViewDetailPage bookstores={BookstoreInfo} className='dark:bg-black dark:text-white'/> */}
+
                                         <li className="p-2 pb-4 my-2 relative special-shadow-button bg-white rounded-2xl overflow-hidden">
                                           <button
                                             className="flex"
-                                            onClick={() => {}}
+                                            onClick={() => {}
+                                          }
                                           >
-                                            <div className="flex text-left pb-2 absolute right-4 top-[18px] hover:drop-shadow-[2px] active:shadow-inner hover:shadow-sm hover:shadow-green-600 px-4 rounded-2xl ml-auto text-bold text-green-600 hover:text-green-600 right-0 top-1/2">
-                                              위치 보기
+                                            <div className="flex items-center py-1 text-left absolute right-4 top-[18px] hover:drop-shadow-[2px] active:shadow-inner hover:shadow-sm hover:shadow-green-600 px-4 rounded-2xl ml-auto text-bold text-green-600 hover:text-green-600 right-0 top-1/2">
+                                             위치 보기
                                             </div>
                                           </button>
                                           <h3 className="font-semibold text-lg">
@@ -500,7 +516,14 @@ const HomeClient: React.FC = () => {
                         </div>
 
                         {!showBookstoreList && (
-                          <div className="hidden md:block md:shadow-xl border-white rounded-2xl">
+                          <div
+                            className="hidden md:block border-white rounded-2xl"
+                            style={{
+                              boxShadow:
+                                "8px 8px 16px #bcbcbcb0, -8px -8px 16px #fffdf7",
+                              width: "500px",
+                            }}
+                          >
                             {/* <Image
                               src={book}
                               alt="Book recommendation"
@@ -510,7 +533,7 @@ const HomeClient: React.FC = () => {
                             /> */}
                             <div>
                               <video
-                              ref={videoRef}
+                                ref={videoRef}
                                 suppressHydrationWarning={true}
                                 src={
                                   "https://usingmethodvideo.s3.ap-northeast-2.amazonaws.com/HowTo.mp4"
@@ -536,20 +559,27 @@ const HomeClient: React.FC = () => {
           </div>
           <div
             suppressHydrationWarning={true}
-            className="mt-[100vh] flex items-center justify-center relative"
+            className="mt-[100vh] flex flex-col items-center justify-center relative"
           >
+            <div className="mx-auto w-[90%] md:w-[80%]">
+              {isLoggedIn ? (
+                <h1 className="mr-auto">개인화된 책방 추천</h1>
+              ) : (
+                <h1 className="mr-auto">실시간 추천</h1>
+              )}
+            </div>
+
             <div className="relative h-full flex justify-center pb-8 mb-28 bg-opacity-50">
- 
-                <NetflixStyleSlider personalizedRecommendations={personalizedRecommendations} imageSrc={imageSrc}/>
-
-
-
+              <NetflixStyleSlider
+                personalizedRecommendations={personalizedRecommendations}
+                imageSrc={imageSrc}
+              />
             </div>
           </div>
         </div>
       </main>
     </>
-  );  
+  );
 };
 
 export default HomeClient;

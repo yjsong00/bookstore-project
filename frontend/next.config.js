@@ -9,15 +9,15 @@ const nextConfig = {
       },
     ];
   },
-  async redirects() {
-    return [
-      {
-        source: "/map",
-        destination: "/map/index.html", // redirecting to /map/index
-        permanent: true, // This makes it a 308 permanent redirect
-      },
-    ];
-  },
+  // async redirects() {
+  //   return [
+  //     {
+  //       source: "/map",
+  //       destination: "/map/", // redirecting to /map/index
+  //       permanent: true, // This makes it a 308 permanent redirect
+  //     },
+  //   ];
+  // },
   trailingSlash: true,
   images: {
     unoptimized: true,

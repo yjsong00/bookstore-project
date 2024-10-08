@@ -8,7 +8,7 @@ import Link from "next/link";
 import { useAuth } from '../hooks/useAuth';
 
 import BookstoreInfo from "../components/bookstorelist"
-import ViewDetailPage from "../components/viewDetail"
+import ViewDetailPage from "../components/viewDetail";
 
 export interface Bookstore{
   ESNTL_ID: string;
