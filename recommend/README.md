@@ -10,6 +10,6 @@
 
 README.md 추가
 
-## 3..aaa
+## 3
 
 테스트 3test
