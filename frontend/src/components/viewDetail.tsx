@@ -11,8 +11,7 @@ type ViewDetailPageProps = {
 };
 
 const instance_th = axios.create({
-  baseURL:
-    "https://www.taehyun35802.shop",
+  baseURL: "https://www.taehyun35802.shop",
 });
 
 const ViewDetailPage: React.FC<ViewDetailPageProps> = ({
@@ -89,8 +88,7 @@ const ViewDetailPage: React.FC<ViewDetailPageProps> = ({
 
   const handleTimeSelection = (time: string) => {
     if (availableTimes.includes(time)) {
-      setReservationTime(time);
-      alert(`${time} 예약이 선택되었습니다.`);
+      setReservationTime(time); // Only update the selected time
     } else {
       alert(`${time} 시간대는 예약할 수 없습니다.`);
     }
@@ -98,31 +96,30 @@ const ViewDetailPage: React.FC<ViewDetailPageProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
     const reservationData = {
       bookstore: bookstores.FCLTY_NM,
       date: date,
       time: reservationTime,
       customer: userInfo ? userInfo.email : "사용자 이메일 주소",
     };
-
+  
     try {
       const response = await instance_th.post("/reservation", reservationData, {
         headers: { "Content-Type": "application/json" },
       });
-
+  
       setMessage("예약이 완료되었습니다: " + JSON.stringify(response.data));
+      
+      // After successful submission, refresh the available times
+      setReservationTime(null);  // Optionally reset the selected time
+      await setDateFunction(date);  // Re-fetch available times for the selected date
     } catch (error) {
       console.error("오류 발생:", error);
-      if (axios.isAxiosError(error)) {
-        setMessage(
-          "오류가 발생했습니다: " + (error.response?.data || error.message)
-        );
-      } else {
-        setMessage("오류가 발생했습니다: 알 수 없는 오류");
-      }
+      setMessage("오류가 발생했습니다: 알 수 없는 오류");
     }
   };
+  
 
   return (
     <>
@@ -203,36 +200,37 @@ const ViewDetailPage: React.FC<ViewDetailPageProps> = ({
                       ))}
                     </div> */}
 
-                    <div className="grid grid-cols-4 gap-4">
-                      {availableTimes.map((time) => (
-                        <button
-                          key={time}
-                          className={`py-2 px-4 border rounded-2xl ${
-                            reservationTime === time
-                              ? "bg-blue-500 text-white"
-                              : availableTimes.includes(time)
-                              ? "bg-gray-100 hover:bg-gray-200"
-                              : "bg-gray-300 cursor-not-allowed" // Style for unavailable times
-                          }`}
-                          onClick={() => handleTimeSelection(time)}
-                          // disabled={!availableTimes.includes(time)} // Keep the disabled logic for accessibility
-                        >
-                          {time}
-                        </button>
-                      ))}
-                    </div>
+                      <div className="grid grid-cols-4 gap-4">
+                        {availableTimes.map((time) => (
+                          <button
+                            key={time}
+                            type="button" // Add this to prevent form submission
+                            className={`py-2 px-4 border rounded-2xl ${
+                              reservationTime === time
+                                ? "bg-blue-500 text-white"
+                                : availableTimes.includes(time)
+                                ? "bg-gray-100 hover:bg-gray-200"
+                                : "bg-gray-300 cursor-not-allowed"
+                            }`}
+                            onClick={() => handleTimeSelection(time)}
+                          >
+                            {time}
+                          </button>
+                        ))}
+                      </div>
 
                     <button
                       type="submit"
-                      disabled={!reservationTime}
-                      className="p-4 border rounded-2xl mt-4 disabled:opacity-50"
+                      disabled={reservationTime}
+
+                      className="px-4 py-2   border rounded-2xl mt-4 disabled:opacity-50 cursor-auto"
                       aria-label="예약 제출"
                     >
                       예약하기
                     </button>
                   </form>
-                  {message && <p>{message}</p>}
-                </div>
+                  {/* {message && <p>{message}</p>} */}
+                </div>  
               </div>
             ) : (
               <div>

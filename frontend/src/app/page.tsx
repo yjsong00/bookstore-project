@@ -52,7 +52,8 @@ const HomeClient: React.FC = () => {
   const [personalizedRecommendations, setPersonalizedRecommendations] =
     useState<any[]>([]);
   const [isPersonalizeLoading, setIsPersonalizeLoading] = useState(false);
-  const [imageSrc, setImageSrc] = useState<string | undefined>(undefined);
+  // const [imageSrc, setImageSrc] = useState<string | undefined>(undefined);
+  const [imageSrc, setImageSrc] = useState<string[]>([]); // 배열로 변경
 
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -116,7 +117,44 @@ const HomeClient: React.FC = () => {
     "음식",
   ];
 
-  const imageUrl = getImage();
+  // const imageUrl = getImage();
+
+
+  const getImages = async () => {
+    const imageUrls = [
+      "https://bookstoreimage-bucket.s3.ap-northeast-2.amazonaws.com/bookstoreimage-1.jpg",
+      "https://bookstoreimage-bucket.s3.ap-northeast-2.amazonaws.com/bookstoreimage-2.jpg",
+      "https://bookstoreimage-bucket.s3.ap-northeast-2.amazonaws.com/bookstoreimage-3.jpg",
+      "https://bookstoreimage-bucket.s3.ap-northeast-2.amazonaws.com/bookstoreimage-4.jpg",
+      "https://bookstoreimage-bucket.s3.ap-northeast-2.amazonaws.com/bookstoreimage-5.jpg",
+      "https://bookstoreimage-bucket.s3.ap-northeast-2.amazonaws.com/bookstoreimage-6.jpg",
+      "https://bookstoreimage-bucket.s3.ap-northeast-2.amazonaws.com/bookstoreimage-7.jpg",
+      "https://bookstoreimage-bucket.s3.ap-northeast-2.amazonaws.com/bookstoreimage-8.jpg",
+      "https://bookstoreimage-bucket.s3.ap-northeast-2.amazonaws.com/bookstoreimage-9.jpg",
+      "https://bookstoreimage-bucket.s3.ap-northeast-2.amazonaws.com/bookstoreimage-10.jpg",
+      
+      // 추가 이미지
+      // 필요한 만큼 추가
+    ];
+
+
+    try {
+      const promises = imageUrls.map(async (url) => {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error("Failed to fetch image");
+        }
+        const blob = await response.blob();
+        return URL.createObjectURL(blob);
+      });
+      const urls = await Promise.all(promises);
+      return urls;
+    } catch (error) {
+      console.error("Error fetching images:", error);
+      return [];
+    }
+  };
+
 
   const getFacilityInfo = (
     ID: string
@@ -193,10 +231,10 @@ const HomeClient: React.FC = () => {
         headers: { "Content-Type": "application/json" },
       });
       const result = response.data["popularityRecommendations"];
-      console.log(result);
+
       setPersonalizedRecommendations(result);
       console.log(isPersonalizeLoading);
-      console.log('here', result)
+    
     } catch (error) {
       console.error("Error fetching personalized recommendations:", error);
     } finally {
@@ -249,13 +287,21 @@ const HomeClient: React.FC = () => {
     Personalize();
   }, []);
 
-  useEffect(() => {
-    const fetchImage = async () => {
-      const imageUrl = await getImage();
-      setImageSrc(imageUrl);
-    };
-    fetchImage();
+  // useEffect(() => {
+  //   const fetchImage = async () => {
+  //     const imageUrl = await getImage();
+  //     setImageSrc(imageUrl);
+  //   };
+  //   fetchImage();
     
+  // }, []);
+
+  useEffect(() => {
+    const fetchImages = async () => {
+      const urls = await getImages();
+      setImageSrc(urls); // 배열로 설정
+    };
+    fetchImages();
   }, []);
 
 
@@ -327,9 +373,10 @@ const HomeClient: React.FC = () => {
                   <div className="absolute flex items-center justify-center w-full h-full">
                     <div className="container flex gap-4 flex-col md:flex-row md:justify-between items-center mx-auto w-[90%] md:w-[80%]">
                       <div className="flex flex-col justify-center md:w-1/2 w-full md:text-left text-center">
-                        <h1 className="pt-0.5 spacial-shadow ">오늘의 책방</h1>
-                        <div className="pb-4 pr-2 font-light text-base hidden md:block">
-                          <p className="pb-0">
+                        <h1 className="pt-0.5" >오늘의 책방
+                        </h1>
+                        <div className="pb-4 pr-2 font-light text-base hidden md:block" >
+                          <p className="style={{paddingBottom: `clamp(3rem, 5vw, 4.2rem)`}}">
                             당신의 일상에 새로움을 더하는 문화의 장
                           </p>
                           <p className="pb-2">AI를 통해 책방을 추천받으세요</p>
@@ -491,60 +538,8 @@ const HomeClient: React.FC = () => {
             suppressHydrationWarning={true}
             className="mt-[100vh] flex items-center justify-center relative"
           >
-            <div className="relative h-full flex justify-center pb-8 mb-28 bg-white bg-opacity-50">
-              {/* {isLoggedIn && (
-                <div className="w-full p-4 flex flex-col items-center">
-                  {isPersonalizeLoading ? (
-                    <p>추천 목록을 불러오는 중...</p>
-                  ) : personalizedRecommendations ? (
-                    <div className="text-center">
-                      <h1 className="mb-4">개인화된 책방 추천</h1>
-
-                      <ul className="flex overflow-x-auto w-full gap-4 mt-12">
-                        {personalizedRecommendations.map(
-                          (recommendation, index) => {
-                            const facilityInfo =
-                              getFacilityInfo(recommendation);
-
-                            return (
-                              <li
-                                key={index}
-                                className="pb-4 w-[300px] text-center"
-                              >
-                                {imageSrc ? (
-                                  <Image
-                                    src={imageSrc}
-                                    alt="s3url"
-                                    width="500"
-                                    height="300"
-                                    className="card-extrude rounded-2xl h-60"
-                                  />
-                                ) : (
-                                  <p>Loading image...</p>
-                                )}
-                                <h3 className="text-lg font-semibold">
-                                  {facilityInfo.name || "Unknown Facility"}
-                                </h3>
-                                <p className="text-sm text-gray-600 px-2">
-                                  {facilityInfo.description ||
-                                    "No description available"}
-                                </p>
-                              </li>
-                            );
-                          }
-                        )}
-                      </ul>
-                    </div>
-                  ) : (
-                    <p>개인화된 추천 목록이 없습니다.</p>
-                  )}
-                
-                
-                
-                
-
-                </div>
-              )} */}
+            <div className="relative h-full flex justify-center pb-8 mb-28 bg-opacity-50">
+ 
                 <NetflixStyleSlider personalizedRecommendations={personalizedRecommendations} imageSrc={imageSrc}/>
 
 
@@ -554,7 +549,7 @@ const HomeClient: React.FC = () => {
         </div>
       </main>
     </>
-  );
+  );  
 };
 
 export default HomeClient;

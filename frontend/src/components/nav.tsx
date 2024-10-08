@@ -79,9 +79,9 @@ export const NavComponent: React.FC<NavComponentProps> = ({
         </div>
       )}
 
-          <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse hover:text-green-700">
+          <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse hover:text-green-600 text-gray-600">
             <FaBookReader className="text-2xl" />
-            <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">linkedbook</span>
+            <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white ">linkedbook</span>
           </Link>
           
           <div className="flex items-center md:order-2">
