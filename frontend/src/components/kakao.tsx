@@ -74,7 +74,7 @@ export const KakaoMap: React.FC<KakaoMapProps> = ({ className, latitude, longitu
               const userLon = position.coords.longitude;
   
               const userPosition = new window.kakao.maps.LatLng(userLat, userLon);
-              const userMarker = new window.kakao.maps.Marker({
+              const userMarker = new window.kakao.maps.Marker(  {
                 position: userPosition,
                 title: '내 위치',
               });

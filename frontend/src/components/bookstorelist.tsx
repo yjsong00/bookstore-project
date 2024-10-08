@@ -19,7 +19,7 @@ const BookstoreInfo: React.FC<AppointmentInfoProps> = ({ bookstores, viewDetail 
           <div><b className="font-bold text-green-500">대분류</b> {bookstores.LCLAS_NM}</div>
           <div className="leading-tight">중분류 {bookstores.MLSFC_NM}</div>
           <div className="flex items-center">
-            <span className="flex-none font-bold text-3xl text-gray-700">{bookstores.FCLTY_NM}</span>
+            <span className="flex-none font-bold text-3xl text-slate-600">{bookstores.FCLTY_NM}</span>
           </div>
           <div className="flex-grow text-left">{bookstores.OPTN_DC}</div>
           <div className="flex-grow text-left">{bookstores.ADIT_DC}</div>
