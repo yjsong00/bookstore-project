@@ -1,51 +1,72 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-node_modules
-# dependencies
-./frontend/node_modules
-./frontend/.pnp
-./frontend/.pnp.js
-./frontend/.yarn/install-state.gz
-
-# testing
-./frontend/coverage
-
-# next.js
-./frontend/.next/
-./frontend/out/
-
-# production
-./frontend/build
-
-# misc
+# Global patterns
 .DS_Store
+*.log
+*.tmp
+*.temp
+
+# Node.js (for frontend and potentially backend services)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Frontend specific
+/frontend/.next/
+/frontend/out/
+/frontend/.vercel
+/frontend/.env*.local
+
+# Backend services (common patterns)
+*.pyc
+__pycache__/
+venv/
+*.env
+
+# Build outputs
+/build/
+/dist/
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Testing
+/coverage/
+
+# Miscellaneous
 *.pem
 
-# debug
-./frontend/npm-debug.log*
-./frontend/yarn-debug.log*
-./frontend/yarn-error.log*
-
-# local env files
-./frontend/.env*.local
-
-# vercel
-./frontend/.vercel
-
-# typescript
+# TypeScript
 *.tsbuildinfo
-./frontend/next-env.d.ts
+next-env.d.ts
 
-# amplify
-./frontend/.amplify
-./frontend/amplify_outputs*
-./frontend/amplifyconfiguration*
+# Service specific ignores (if needed)
+/mypage/some_specific_file.txt
+/personalize/another_specific_file.log
+/recommend/specific_recommend_file.config
+/reservation/specific_reservation_file.tmp
 
-# Ignore node_modules in all directories
-**/node_modules/
+# Jenkins specific (if needed)
+.jenkins/
 
-# Ignore .env files in all directories
-**/.env*
+# Docker
+*.dockerignore
 
-# Ignore build directories in all subdirectories
-**/build/
-**/dist/
+# AWS
+.aws/
+
+# Temporary files
+*.bak
+*.swp
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
