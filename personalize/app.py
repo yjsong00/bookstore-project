@@ -5,7 +5,7 @@ import boto3
 app = Flask(__name__)
 CORS(app)
 
-# Amazon Personalize 클라이언트 생성하기
+# Amazon Personalize 클라이언트 생성
 personalize_runtime = boto3.client('personalize-runtime', region_name='ap-northeast-2')
 
 # 두 캠페인의 ARNi
