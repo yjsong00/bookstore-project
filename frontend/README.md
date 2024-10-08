@@ -10,7 +10,7 @@ This template equips you with a foundational Next.js application integrated with
 
 - **Authentication**: Setup with Amazon Cognito for secure user authentication.
 - **API**: Ready-to-use GraphQL endpoint with AWS AppSync.
-- **Database**: Real-time database powered by Amazon DynamoDB.
+- **Database**: Real-time database powered by Amazon DynamoDB..
 
 ## Deploying to AWS
 
