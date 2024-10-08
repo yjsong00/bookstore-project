@@ -13,9 +13,7 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "types":[
-      "kakao.maps.d.ts"
-    ],    
+    "types": ["kakao.maps.d.ts"],
     "plugins": [
       {
         "name": "next"
