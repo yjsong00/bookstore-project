@@ -1,0 +1,51 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/frontend/node_modules
+/frontend/.pnp
+/frontend/.pnp.js
+/frontend/.yarn/install-state.gz
+
+# testing
+/frontend/coverage
+
+# next.js
+/frontend/.next/
+/frontend/out/
+
+# production
+/frontend/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+/frontend/npm-debug.log*
+/frontend/yarn-debug.log*
+/frontend/yarn-error.log*
+
+# local env files
+/frontend/.env*.local
+
+# vercel
+/frontend/.vercel
+
+# typescript
+*.tsbuildinfo
+/frontend/next-env.d.ts
+
+# amplify
+/frontend/.amplify
+/frontend/amplify_outputs*
+/frontend/amplifyconfiguration*
+
+# Ignore node_modules in all directories
+**/node_modules/
+
+# Ignore .env files in all directories
+**/.env*
+
+# Ignore build directories in all subdirectories
+**/build/
+**/dist/
