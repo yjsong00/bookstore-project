@@ -50,6 +50,8 @@ Global -> Add credential -> AWS credentials에서 aws_cre 생성
 
 Global -> Add credential -> Username with password에서 git_cre 생성
 
+jenkins, github ssh넣기.
+
 ## item 만들기
 
 이름작성 후 단일 pipeline 선택(나의 경우는 bookstore-project)

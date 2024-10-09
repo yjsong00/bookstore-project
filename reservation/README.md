@@ -21,19 +21,3 @@ reservation.py, Dockerfile 수정
 ## 5
 
 테스트5
-
-## 6
-
-Jenkins Email추가
-
-## 7
-
-테스트7
-
-## 8
-
-테스트8
-
-## 9(latest)
-
-테스트9
