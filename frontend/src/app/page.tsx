@@ -16,7 +16,7 @@ import ViewDetailPage from "../components/viewDetail";
 
 
 const instance_ai = axios.create({
-  baseURL: "https://www.taehyun35802.shop",
+  baseURL: "https://www.linkedbook.shop",
 });
 const getImage = async () => {
   try {
@@ -396,7 +396,7 @@ const HomeClient: React.FC = () => {
                           <AnimatePresence mode="wait">
                             {!aiClick ? (
                               <motion.button
-                                className=" md:shadow-lg bookButton w-60 py-3 font-semibold text-xl md:left-0 ml-auto mr-auto left-0 right-0 border-b border-gray-500 hover:border-gray-400 active:border-0 dark:border-gray-600" // Ensure absolute positioning
+                                className=" md:shadow-lg bookButton w-60 py-3 font-semibold text-xl md:left-0 ml-auto mr-auto left-0 right-0 border-b border-gray-300 hover:border-gray-300 active:border-0 dark:border-gray-600" // Ensure absolute positioning
                                 onClick={() => setAiClick(true)}
                                 variants={buttonVariants}
                                 initial="initial"
