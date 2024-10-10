@@ -35,6 +35,7 @@ const instance_th = axios.create({
   baseURL: "https://www.linkedbook.shop/",
 });
 
+
 const MyPage: React.FC = () => {
   const { isLoggedIn, userInfo, logout } = useMyPage();
 
