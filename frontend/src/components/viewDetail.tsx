@@ -11,7 +11,7 @@ type ViewDetailPageProps = {
 };
 
 const instance_th = axios.create({
-  baseURL: "https://www.taehyun35802.shop",
+  baseURL: "https://www.linkedbook.shop",
 });
 
 const ViewDetailPage: React.FC<ViewDetailPageProps> = ({
@@ -95,7 +95,7 @@ const ViewDetailPage: React.FC<ViewDetailPageProps> = ({
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault(); 
   
     // Check if the user is logged in
     if (!isLoggedIn) {
