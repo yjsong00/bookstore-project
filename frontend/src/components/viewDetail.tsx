@@ -227,8 +227,8 @@ const ViewDetailPage: React.FC<ViewDetailPageProps> = ({
 
                     <button
                       type="submit"
-                      disabled={!reservationTime}
-                      className="px-4 py-2 border rounded-2xl mt-4 cursor-auto"
+                      // disabled={!reservationTime}
+                      className="px-4 py-2 border rounded-2xl mt-4"
                       aria-label="예약 제출"
                     >
                       예약하기
