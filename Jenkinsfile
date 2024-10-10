@@ -119,12 +119,6 @@ def buildAndDeployService(String serviceName) {
             
             // Clean up unnecessary files
             sh "git rm -r --cached ."
-            sh "git add ."
-            sh """
-                if ! git diff --cached --quiet; then
-                    git commit -m 'Remove unnecessary files from Git tracking for ${serviceName}'
-                fi
-            """
 
             // Update EKS manifest
             sh "sed -i 's@${awsecr}:.*@${awsecr}:${nextTag}@g' ${serviceName}/${serviceName}.yaml"
