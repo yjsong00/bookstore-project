@@ -179,26 +179,28 @@ const HomeClient: React.FC = () => {
   };
 
   const handleSearch = async () => {
-    const query = inputValue + " " + selectedCategories.join(" ");
+    const prequery = inputValue + " " + selectedCategories.join(" ");
     const isKeyword = !inputValue && selectedCategories.length > 0;
     setShowBookstoreList(true);
-
+  
     setIsLoading(true);
-    console.log("Sending to backend:", {
-      searchQuery: inputValue,
-      categories: selectedCategories,
-      query: query,
-      keyword: isKeyword,
-    });
 
+  
+    // Default query when no input or categories
     const aiparam = {
       searchQuery: inputValue,
       categories: selectedCategories,
-      query: query,
+      query: prequery.trim() === "" ? '편안한 분위기에 책 종류가 많은 책방을 추천해줘' : prequery,
       keyword: isKeyword,
     };
-
+    console.log("Sending to backend:", {
+      searchQuery: inputValue,
+      categories: selectedCategories,
+      query:  prequery.trim() === "" ? '편안한 분위기에 책 종류가 많은 책방을 추천해줘' : prequery,
+      keyword: isKeyword,
+    });
     const AiUrl = "/recommend";
+  
     const AiSearch = async () => {
       try {
         const response = await instance_ai.post(AiUrl, aiparam, {
@@ -206,18 +208,18 @@ const HomeClient: React.FC = () => {
         });
         const result = response.data;
         console.log(result);
-
+  
         setAiList(result);
         console.log("Updated aiList:", result);
         setIsLoading(false);
       } catch (error) {
-        if (error) {
-          console.error("Error data:", error);
-        }
+        console.error("Error data:", error);
       }
     };
+  
     AiSearch();
   };
+  
 
   const PersonalizeUrl = "/get-recommendations";
 
@@ -276,7 +278,7 @@ const HomeClient: React.FC = () => {
         const response = await fetch("/data/bookstore.json");
         const data = await response.json();
         setBookstoreList(data);
-        console.log("Fetched bookstore data:", data);
+        // console.log("Fetched bookstore data:", data);
       } catch (error) {
         console.error("Error fetching bookstore data:", error);
       }
@@ -303,9 +305,9 @@ const HomeClient: React.FC = () => {
       videoRef.current.play(); // Attempt to play the video automatically
     }
   }, []);
-  
+
   useEffect(() => {
-    console.log("Updated bookstoreList:", bookstoreList);
+    // console.log("Updated bookstoreList:", bookstoreList);
   }, [bookstoreList]);
 
   return (
@@ -484,7 +486,7 @@ const HomeClient: React.FC = () => {
                                                 {bookstore2 && (
                                                   <ViewDetailPage
                                                     bookstores={bookstore2}
-                                                    className="dark:bg-black dark:text-white z-[9999] "
+                                                    className="dark:bg-black dark:text-white z-[9999]"
                                                   />
                                                 )}
                                               </div>
