@@ -11,7 +11,7 @@ type ViewDetailPageProps = {
 };
 
 const instance_th = axios.create({
-  baseURL: "https://www.linkedbook.shop",
+  baseURL: "https://www.taehyun35802.shop",
 });
 
 const ViewDetailPage: React.FC<ViewDetailPageProps> = ({
@@ -97,6 +97,12 @@ const ViewDetailPage: React.FC<ViewDetailPageProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
   
+    // Check if the user is logged in
+    if (!isLoggedIn) {
+      setMessage("예약하려면 로그인을 해주세요.");
+      return;
+    }
+  
     const reservationData = {
       bookstore: bookstores.FCLTY_NM,
       date: date,
@@ -110,10 +116,10 @@ const ViewDetailPage: React.FC<ViewDetailPageProps> = ({
       });
   
       setMessage("예약이 완료되었습니다: " + JSON.stringify(response.data));
-      
+  
       // After successful submission, refresh the available times
-      setReservationTime(null);  // Optionally reset the selected time
-      await setDateFunction(date);  // Re-fetch available times for the selected date
+      setReservationTime(null); // Optionally reset the selected time
+      await setDateFunction(date); // Re-fetch available times for the selected date
     } catch (error) {
       console.error("오류 발생:", error);
       setMessage("오류가 발생했습니다: 알 수 없는 오류");
