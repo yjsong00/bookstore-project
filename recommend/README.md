@@ -8,4 +8,4 @@
 
 ## 2
 
-README.md 추가.
+README.md 추가...
