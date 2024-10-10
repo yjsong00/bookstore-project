@@ -52,7 +52,7 @@ def get_personalized_ranking(user_id, item_list):
         print(f"Personalized Ranking API 호출 오류: {e}")
         return item_list  # API 호출 실패 시 기본 아이템 순서 유지
 
-# 추천 아이템을 가져오는 API 엔드포인트
+# 추천 아이템을 가져오는 API 엔드포인트.
 @app.route('/get-recommendations', methods=['GET'])
 def get_recommendations_endpoint():
     user_id = request.args.get('userId')  # 쿼리 파라미터에서 userId 가져오기
