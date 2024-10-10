@@ -72,14 +72,14 @@ def get_recommendations_endpoint():
                 userId=user_id
             )
             popularity_items = [item['itemId'] for item in popularity_response['itemList'][:10]]  # 최대 10개
-        # else:
-        #     # 로그인되지 않은 경우 기본 인기도 추천 반환
-        #     popularity_response = personalize_runtime.get_recommendations(
-        #         campaignArn=popularity_campaign_arn,
-        #         userId='defaultUserId'
-        #     )
-        #     popularity_items = [item['itemId'] for item in popularity_response['itemList'][:10]]  # 최대 10개
-        #     ranked_items = []
+        else:
+            # 로그인되지 않은 경우 기본 인기도 추천 반환
+            popularity_response = personalize_runtime.get_recommendations(
+                campaignArn=popularity_campaign_arn,
+                userId='defaultUserId'
+            )
+            popularity_items = [item['itemId'] for item in popularity_response['itemList'][:10]]  # 최대 10개
+            ranked_items = []
 
         return jsonify({
             'personalizedRecommendations': ranked_items if ranked_items else default_popularity_recommendations,

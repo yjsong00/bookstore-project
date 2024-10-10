@@ -30,7 +30,6 @@ def retrieve_and_generate_keyword(query, kbId, modelArn, numberOfResults, keywor
             }
         }
     )
-    print("대답은 : " , response)
     return response
 
 def retrieve_and_generate_query(query, kbId, modelArn, numberOfResults, queryPromptTemplate):
@@ -54,7 +53,6 @@ def retrieve_and_generate_query(query, kbId, modelArn, numberOfResults, queryPro
             }
         }
     )
-    print("대답은 : " , response)
     return response
 
 def parse_bookstore_info(text):
@@ -68,10 +66,10 @@ def parse_bookstore_info(text):
             "FCLTY_ROAD_NM_ADDR": match[1].strip(),
             "describe": match[2].strip()
         })
-    
-    return bookstores
-
-##예외처리
+    if not bookstores:
+        return False
+    else:
+        return bookstores
 
 @app.route('/recommend', methods=['POST'])
 def retrieve_endpoint():
@@ -137,11 +135,12 @@ def retrieve_endpoint():
             response = retrieve_and_generate_query(query, kbId, modelArn, numberOfResults, queryPromptTemplate)
         # 텍스트 출력을 파싱하여 JSON 형식으로 변환
         output = response.get("output", {}).get("text", "")
-        print("\n")
-        print("output 에 대한 대답은 : " ,output)
         bookstores = parse_bookstore_info(output)
         
-        return jsonify(bookstores), 200, {'Content-Type': 'application/json'}
+        if bookstores != False:
+            return jsonify(bookstores), 200, {'Content-Type': 'application/json'}
+        else:
+            return jsonify({"message": "null"}), 200, {'Content-Type': 'application/json'}
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
