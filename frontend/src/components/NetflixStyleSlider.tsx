@@ -71,7 +71,7 @@ const NetflixStyleSlider: React.FC<NetflixStyleSliderProps> = ({ personalizedRec
     };
 
     fetchData();
-  }, []);
+  }, []); 
 
   useEffect(() => {
     if (sliderRef.current) {
