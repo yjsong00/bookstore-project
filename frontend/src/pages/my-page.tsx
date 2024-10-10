@@ -32,7 +32,7 @@ const useMyPage = (): UseMyPageReturn => {
 };
 
 const instance_th = axios.create({
-  baseURL: "https://www.taehyun35802.shop",
+  baseURL: "https://www.linkedbook.shop/",
 });
 
 const MyPage: React.FC = () => {
@@ -61,6 +61,7 @@ const MyPage: React.FC = () => {
 
   useEffect(() => {
     const myData = userInfo ? userInfo.email : "사용자 이메일 주소";
+    console.log(myData + 'test')
     MyPageFunction(myData);
   }, [userInfo]);
 
