@@ -41,7 +41,7 @@ pipeline {
                     withAWS(region: "${REGION}", credentials: "${AWSCREDENTIAL}") {
                         s3Delete(bucket: "${BUCKET}", path: '')
                         s3Upload(file: 'out', bucket: "${BUCKET}", path: '')
-                        cfInvalidate(distribution:'E1HN3G0TOGIK6L', paths:['/*'], waitForCompletion: true)
+                        cfInvalidate(distribution:'E1D3GIGSIQUMEZ', paths:['/*'], waitForCompletion: true)
                     }
                     sh "rm -rf node_modules"
                     sh "rm -rf out"
