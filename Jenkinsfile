@@ -117,9 +117,6 @@ def buildAndDeployService(String serviceName) {
             sh "git config --global user.email ${GITEMAIL}"
             sh "git config --global user.name ${GITNAME}"
             
-            // Clean up unnecessary files
-            sh "git rm -r --cached ."
-
             // Update EKS manifest
             sh "sed -i 's@${awsecr}:.*@${awsecr}:${nextTag}@g' ${serviceName}/${serviceName}.yaml"
             sh "git add ${serviceName}/${serviceName}.yaml"
