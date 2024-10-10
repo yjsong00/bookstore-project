@@ -11,31 +11,19 @@ import { Bookstore } from "../pages/app";
 import BookstoreListSkeleton from "./../components/BookstoreListSkeleton";
 import Gradient from "./../components/gradient";
 import NetflixStyleSlider from "../components/NetflixStyleSlider";
-import BookstoreInfo from "../components/bookstorelist"
+import BookstoreInfo from "../components/bookstorelist";
 import ViewDetailPage from "../components/viewDetail";
 
-
 const instance_ai = axios.create({
-  baseURL: "https://www.taehyun35802.shop",
+  baseURL: "https://www.linkedbook.shop",
 });
-const getImage = async () => {
-  try {
-    const response = await fetch(
-      "https://bookstoreimage-bucket.s3.ap-northeast-2.amazonaws.com/bookstoreimage-3.jpeg"
-    );
-    if (!response.ok) {
-      throw new Error("Failed to fetch image");
-    }
-    const blob = await response.blob(); // Blob 형태로 변환
-    const imageUrl = URL.createObjectURL(blob); // Blob URL 생성
-    return imageUrl; // Blob URL 반환
-  } catch (error) {
-    console.error("Error fetching image:", error);
-    return undefined;
-  }
-};
 
 const HomeClient: React.FC = () => {
+  const [isBookstoreDataLoaded, setIsBookstoreDataLoaded] = useState(false);
+
+  const [selectedBookstore, setSelectedBookstore] = useState<Bookstore | null>(
+    null
+  );
   const { isLoggedIn, userInfo, logout } = useAuth();
   const [aiClick, setAiClick] = useState<boolean>(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -112,8 +100,6 @@ const HomeClient: React.FC = () => {
     "음식",
   ];
 
-  // const imageUrl = getImage();
-
   const getImages = async () => {
     const imageUrls = [
       "https://bookstoreimage-bucket.s3.ap-northeast-2.amazonaws.com/bookstoreimage-1.jpg",
@@ -148,7 +134,6 @@ const HomeClient: React.FC = () => {
     }
   };
 
-  
   const getFacilityInfo = (
     ID: string
   ): { FCLTY_NM: string | null; OPTN_DC: string | null } => {
@@ -158,29 +143,32 @@ const HomeClient: React.FC = () => {
     return {
       FCLTY_NM: foundBookstore ? foundBookstore.FCLTY_NM : null,
       OPTN_DC: foundBookstore ? foundBookstore.OPTN_DC : null,
-
     };
   };
 
-  // useEffect(()=>{
-  //   const getBookInfo = (
-  //     ID: string
-  //   ): { Bookstore: Bookstore | null } => {
-  //     const foundBookstore = bookstoreList.find(
-  //       (bookstore) => bookstore.ESNTL_ID === ID
-  //     );
-  //     return {
-  //       Bookstore: foundBookstore || null
-  //     };
-  //   };
+  const getBookInfo = (FCLTY_NM?: string): Bookstore | null => {
+    console.log("Searching for FCLTY_NM:", FCLTY_NM);
+    console.log("Current bookstoreList length:", bookstoreList.length);
 
-  //   console.log(getBookInfo('KCCBSPO22N000000455'))
-  // },[])
+    if (!FCLTY_NM) {
+      console.log("No FCLTY_NM provided, returning null");
+      return null;
+    }
 
+    const foundBookstore = bookstoreList.find(
+      (bookstore) => bookstore.FCLTY_NM === FCLTY_NM
+    );
 
+    if (foundBookstore) {
+      console.log("Found matching bookstore:", foundBookstore.FCLTY_NM);
+    } else {
+      console.log("No matching bookstore found for FCLTY_NM:", FCLTY_NM);
+    }
 
+    return foundBookstore || null;
+  };
 
-
+  useEffect(() => {}, [bookstoreList]);
 
   const toggleCategory = (category: string) => {
     setSelectedCategories((prev) =>
@@ -288,28 +276,18 @@ const HomeClient: React.FC = () => {
         const response = await fetch("/data/bookstore.json");
         const data = await response.json();
         setBookstoreList(data);
+        console.log("Fetched bookstore data:", data);
       } catch (error) {
         console.error("Error fetching bookstore data:", error);
       }
     };
-
+  
     fetchData();
   }, []);
 
   useEffect(() => {
     Personalize();
   }, []);
-
-
-
-  // useEffect(() => {
-  //   const fetchImage = async () => {
-  //     const imageUrl = await getImage();
-  //     setImageSrc(imageUrl);
-  //   };
-  //   fetchImage();
-
-  // }, []);
 
   useEffect(() => {
     const fetchImages = async () => {
@@ -325,6 +303,10 @@ const HomeClient: React.FC = () => {
       videoRef.current.play(); // Attempt to play the video automatically
     }
   }, []);
+  
+  useEffect(() => {
+    console.log("Updated bookstoreList:", bookstoreList);
+  }, [bookstoreList]);
 
   return (
     <>
@@ -396,7 +378,7 @@ const HomeClient: React.FC = () => {
                           <AnimatePresence mode="wait">
                             {!aiClick ? (
                               <motion.button
-                                className=" md:shadow-lg bookButton w-60 py-3 font-semibold text-xl md:left-0 ml-auto mr-auto left-0 right-0 border-b border-gray-500 hover:border-gray-400 active:border-0 dark:border-gray-600" // Ensure absolute positioning
+                                className=" md:shadow-lg bookButton w-60 py-3 font-semibold text-xl md:left-0 ml-auto mr-auto left-0 right-0 border-b border-gray-300 hover:border-gray-300 active:border-0 dark:border-gray-600" // Ensure absolute positioning
                                 onClick={() => setAiClick(true)}
                                 variants={buttonVariants}
                                 initial="initial"
@@ -477,37 +459,48 @@ const HomeClient: React.FC = () => {
                                   <BookstoreListSkeleton />
                                 ) : (
                                   <ul className="z-[100] divide-y divide-white py-4 px-4 w-full rounded-2xl max-h-[600px] overflow-y-auto box-extrude">
-                                    {aiList.map((datas, index) => (
-                                      <React.Fragment key={datas.FCLTY_NM}>
+                                    {aiList.map((datas, index) => {
+                                      console.log(
+                                        `Processing aiList item ${index}:`,
+                                        datas
+                                      );
+                                      const bookstore2 = getBookInfo(
+                                        datas.FCLTY_NM
+                                      );
+                                      console.log(
+                                        `getBookInfo result for item ${index}:`,
+                                        bookstore2
+                                      );
 
-
-{/* <ViewDetailPage bookstores={BookstoreInfo} className='dark:bg-black dark:text-white'/> */}
-
-                                        <li className="p-2 pb-4 my-2 relative special-shadow-button bg-white rounded-2xl overflow-hidden">
-                                          <button
-                                            className="flex"
-                                            onClick={() => {}
-                                          }
-                                          >
-                                            <div className="flex items-center py-1 text-left absolute right-4 top-[18px] hover:drop-shadow-[2px] active:shadow-inner hover:shadow-sm hover:shadow-green-600 px-4 rounded-2xl ml-auto text-bold text-green-600 hover:text-green-600 right-0 top-1/2">
-                                             위치 보기
+                                      return (
+                                        <React.Fragment key={datas.FCLTY_NM}>
+                                          <li className="p-2 pb-4 my-2 relative special-shadow-button bg-white rounded-2xl overflow-hidden">
+                                            <div className="flex flex-row">
+                                              <h3 className="font-semibold text-lg">
+                                                {datas.FCLTY_NM ||
+                                                  "Unknown Facility"}
+                                              </h3>
+                                              <div className="ml-auto my-auto mr-4">
+                                                {bookstore2 && (
+                                                  <ViewDetailPage
+                                                    bookstores={bookstore2}
+                                                    className="dark:bg-black dark:text-white z-[9999] "
+                                                  />
+                                                )}
+                                              </div>
                                             </div>
-                                          </button>
-                                          <h3 className="font-semibold text-lg">
-                                            {datas.FCLTY_NM ||
-                                              "Unknown Facility"}
-                                          </h3>
-                                          <p className="text-sm text-gray-600 mt-1">
-                                            {datas.describe ||
-                                              "No description available"}
-                                          </p>
-                                          <p className="text-sm text-gray-500 mt-1">
-                                            {datas.FCLTY_ROAD_NM_ADDR ||
-                                              "Address not available"}
-                                          </p>
-                                        </li>
-                                      </React.Fragment>
-                                    ))}
+                                            <p className="text-sm text-gray-600 mt-1">
+                                              {datas.describe ||
+                                                "No description available"}
+                                            </p>
+                                            <p className="text-sm text-gray-500 mt-1">
+                                              {datas.FCLTY_ROAD_NM_ADDR ||
+                                                "Address not available"}
+                                            </p>
+                                          </li>
+                                        </React.Fragment>
+                                      );
+                                    })}
                                   </ul>
                                 )}
                               </motion.div>
@@ -561,7 +554,7 @@ const HomeClient: React.FC = () => {
             suppressHydrationWarning={true}
             className="mt-[100vh] flex flex-col items-center justify-center relative"
           >
-            <div className="mx-auto w-[90%] md:w-[80%]">
+            <div className="mx-auto w-[90%] md:w-[80%] ">
               {isLoggedIn ? (
                 <h1 className="mr-auto">개인화된 책방 추천</h1>
               ) : (
