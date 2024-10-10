@@ -16,4 +16,4 @@ README.md 추가
 
 ## 4
 
-reservation.py, Dockerfile 수정
+reservation.py, Dockerfile 수정.
