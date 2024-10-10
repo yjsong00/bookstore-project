@@ -7,7 +7,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(400).json({ error: 'Missing required query parameters' });
   }
 
-  const apiUrl = `https://ee.taehyun35802.shop/reservation?bookstore=${encodeURIComponent(bookstore as string)}&date=${date}`;
+  const apiUrl = `https://www.linkedbook.shop/reservation?bookstore=${encodeURIComponent(bookstore as string)}&date=${date}`;
 
   try {
     const apiResponse = await fetch(apiUrl, {

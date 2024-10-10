@@ -16,7 +16,7 @@ import ViewDetailPage from "../components/viewDetail";
 
 
 const instance_ai = axios.create({
-  baseURL: "https://www.taehyun35802.shop",
+  baseURL: "https://www.linkedbook.shop",
 });
 const getImage = async () => {
   try {
@@ -396,7 +396,7 @@ const HomeClient: React.FC = () => {
                           <AnimatePresence mode="wait">
                             {!aiClick ? (
                               <motion.button
-                                className=" md:shadow-lg bookButton w-60 py-3 font-semibold text-xl md:left-0 ml-auto mr-auto left-0 right-0 border-b border-gray-500 hover:border-gray-400 active:border-0 dark:border-gray-600" // Ensure absolute positioning
+                                className=" md:shadow-lg bookButton w-60 py-3 font-semibold text-xl md:left-0 ml-auto mr-auto left-0 right-0 border-b border-gray-300 hover:border-gray-300 active:border-0 dark:border-gray-600" // Ensure absolute positioning
                                 onClick={() => setAiClick(true)}
                                 variants={buttonVariants}
                                 initial="initial"
@@ -486,7 +486,13 @@ const HomeClient: React.FC = () => {
                                         <li className="p-2 pb-4 my-2 relative special-shadow-button bg-white rounded-2xl overflow-hidden">
                                           <button
                                             className="flex"
-                                            onClick={() => {}
+                                            onClick={() => {
+
+
+
+
+
+                                            }
                                           }
                                           >
                                             <div className="flex items-center py-1 text-left absolute right-4 top-[18px] hover:drop-shadow-[2px] active:shadow-inner hover:shadow-sm hover:shadow-green-600 px-4 rounded-2xl ml-auto text-bold text-green-600 hover:text-green-600 right-0 top-1/2">
@@ -561,7 +567,7 @@ const HomeClient: React.FC = () => {
             suppressHydrationWarning={true}
             className="mt-[100vh] flex flex-col items-center justify-center relative"
           >
-            <div className="mx-auto w-[90%] md:w-[80%]">
+            <div className="mx-auto w-[90%] md:w-[80%] ">
               {isLoggedIn ? (
                 <h1 className="mr-auto">개인화된 책방 추천</h1>
               ) : (
