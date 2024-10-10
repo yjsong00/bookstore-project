@@ -11,7 +11,7 @@ type ViewDetailPageProps = {
 };
 
 const instance_th = axios.create({
-  baseURL: "https://www.linkedbook.shop",
+  baseURL: "https://www.taehyun35802.shop",
 });
 
 const ViewDetailPage: React.FC<ViewDetailPageProps> = ({
