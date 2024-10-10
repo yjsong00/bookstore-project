@@ -5,7 +5,7 @@ const nextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: "https://www.taehyun35802.shop/:path*",
+        destination: "https://www.linkedbook.shop/:path*",
       },
     ];
   },
