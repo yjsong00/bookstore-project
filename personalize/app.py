@@ -9,9 +9,9 @@ CORS(app)
 personalize_runtime = boto3.client('personalize-runtime', region_name='ap-northeast-2')
 
 # 두 캠페인의 ARNi
-#user_personalization_campaign_arn = 'arn:aws:personalize:ap-northeast-2:178020491921:campaign/user-s'
-#personalized_ranking_campaign_arn = 'arn:aws:personalize:ap-northeast-2:178020491921:campaign/ranking-cam'
-#popularity_campaign_arn = 'arn:aws:personalize:ap-northeast-2:178020491921:campaign/popul-cam'
+# user_personalization_campaign_arn = 'arn:aws:personalize:ap-northeast-2:178020491921:campaign/user-s'
+# personalized_ranking_campaign_arn = 'arn:aws:personalize:ap-northeast-2:178020491921:campaign/ranking-cam'
+# popularity_campaign_arn = 'arn:aws:personalize:ap-northeast-2:178020491921:campaign/popul-cam'
 
 # 기본 추천 아이템 (백업 데이터)
 default_popularity_recommendations = [
@@ -72,14 +72,14 @@ def get_recommendations_endpoint():
                 userId=user_id
             )
             popularity_items = [item['itemId'] for item in popularity_response['itemList'][:10]]  # 최대 10개
-        else:
-            # 로그인되지 않은 경우 기본 인기도 추천 반환
-            popularity_response = personalize_runtime.get_recommendations(
-                campaignArn=popularity_campaign_arn,
-                userId='defaultUserId'
-            )
-            popularity_items = [item['itemId'] for item in popularity_response['itemList'][:10]]  # 최대 10개
-            ranked_items = []
+        # else:
+        #     # 로그인되지 않은 경우 기본 인기도 추천 반환
+        #     popularity_response = personalize_runtime.get_recommendations(
+        #         campaignArn=popularity_campaign_arn,
+        #         userId='defaultUserId'
+        #     )
+        #     popularity_items = [item['itemId'] for item in popularity_response['itemList'][:10]]  # 최대 10개
+        #     ranked_items = []
 
         return jsonify({
             'personalizedRecommendations': ranked_items if ranked_items else default_popularity_recommendations,
