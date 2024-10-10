@@ -8,7 +8,7 @@ pipeline {
         GITCREDENTIAL = 'git_cre'
         AWSCREDENTIAL = 'aws_cre'
         REGION = 'ap-northeast-2'
-        BUCKET = 'www.taehyun35802.shop'
+        BUCKET = 'www.linkedbook.shop'
         ECR_BASE = '178020491921.dkr.ecr.ap-northeast-2.amazonaws.com'
     }
     stages {

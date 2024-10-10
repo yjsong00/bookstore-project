@@ -50,7 +50,7 @@ Global -> Add credential -> AWS credentials에서 aws_cre 생성
 
 Global -> Add credential -> Username with password에서 git_cre 생성
 
-jenkins, github ssh넣기.
+jenkins, github에 ssh넣기, known host 추가
 
 ## item 만들기
 
