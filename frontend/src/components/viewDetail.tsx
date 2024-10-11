@@ -134,7 +134,7 @@ const ViewDetailPage: React.FC<ViewDetailPageProps> = ({
           className={`fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-10 ${className} dark:bg-black dark:text-white`}
         >
           <div
-            className="bg-white p-4 rounded-2xl w-full max-w-screen-lg"
+            className="bg-white p-4 rounded-2xl w-full max-w-screen-lg relative"
             ref={modalRef}
           >
             <div className="flex">
@@ -171,7 +171,7 @@ const ViewDetailPage: React.FC<ViewDetailPageProps> = ({
               <div className="w-full h-[60vh] sm:h-[60vh] md:h-[70vh] lg:h-[70vh] z-[100]">
                 <div>
                   <h2>{bookstores.FCLTY_NM}</h2>
-                  <form onSubmit={handleSubmit}>
+                  <form onSubmit={handleSubmit} className="">
                     <div className="flex gap-2 justify-center mb-4">
                       <input
                         className="rounded-2xl border px-2"
@@ -228,7 +228,7 @@ const ViewDetailPage: React.FC<ViewDetailPageProps> = ({
                     <button
                       type="submit"
                       // disabled={!reservationTime}
-                      className="px-4 py-2 border rounded-2xl mt-4"
+                      className="px-4 py-2 border rounded-2xl mb-4 absolute bottom-10"
                       aria-label="예약 제출"
                     >
                       예약하기
