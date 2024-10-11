@@ -118,7 +118,7 @@ const NetflixStyleSlider: React.FC<NetflixStyleSliderProps> = ({ personalizedRec
             return (
               <div key={index} className="flex-shrink-0 px-2">
                 <div 
-                  className="relative rounded-2xl overflow-hidden pointer-events-none border-green-700 border-opacity-50 border-[6px]"
+                  className="relative rounded-2xl overflow-hidden pointer-events-none border-[#3eb6bf] border-opacity-50 border-[6px]"
                   style={{
                     boxShadow: '8px 8px 16px #bcbcbcb0, -8px -8px 16px #fffdf7'
                   }}
@@ -135,7 +135,7 @@ const NetflixStyleSlider: React.FC<NetflixStyleSliderProps> = ({ personalizedRec
                     <h3 className="text-white text-xl font-bold bg-green-900 inline-block px-2 rounded-full py-1 bg-opacity-70">
                       {facilityInfo.name || "Unknown Facility"}
                     </h3>
-                    <p className="flex text-black text-sm mt-1">
+                    <p className="flex text-black text-sm mt-1 line-clamp-2">
                       {facilityInfo.description || "No description available"}
                     </p>
                   </div>

@@ -182,38 +182,50 @@ const HomeClient: React.FC = () => {
     const prequery = inputValue + " " + selectedCategories.join(" ");
     const isKeyword = !inputValue && selectedCategories.length > 0;
     setShowBookstoreList(true);
-  
     setIsLoading(true);
-
   
     // Default query when no input or categories
     const aiparam = {
       searchQuery: inputValue,
       categories: selectedCategories,
-      query: prequery.trim() === "" ? '편안한 분위기에 책 종류가 많은 책방을 추천해줘' : prequery,
+      query:
+        prequery.trim() === ""
+          ? "편안한 분위기에 책 종류가 많은 책방을 추천해줘"
+          : prequery,
       keyword: isKeyword,
     };
-    console.log("Sending to backend:", {
-      searchQuery: inputValue,
-      categories: selectedCategories,
-      query:  prequery.trim() === "" ? '편안한 분위기에 책 종류가 많은 책방을 추천해줘' : prequery,
-      keyword: isKeyword,
-    });
+    console.log("Sending to backend:", aiparam);
     const AiUrl = "/recommend";
   
     const AiSearch = async () => {
       try {
+        // 사용자의 입력이 없고 선택된 카테고리도 없는 경우 예외 처리
+        if (inputValue.trim() === "" && selectedCategories.length === 0) {
+          alert("검색어 또는 카테고리를 입력해주세요.");
+          setIsLoading(false);
+          return;
+        }
+  
         const response = await instance_ai.post(AiUrl, aiparam, {
           headers: { "Content-Type": "application/json" },
         });
+  
         const result = response.data;
         console.log(result);
   
-        setAiList(result);
-        console.log("Updated aiList:", result);
-        setIsLoading(false);
+        if (result.message === "null") {
+          // 백엔드에서 잘못된 요청에 대한 응답 처리
+          alert("잘못된 입력입니다.");
+          setAiList([]); // 결과 목록 초기화
+        } else {
+          setAiList(result);
+          console.log("Updated aiList:", result);
+        }
       } catch (error) {
         console.error("Error data:", error);
+        alert("올바른 추천키워드를 입력주세요.");
+      } finally {
+        setIsLoading(false);
       }
     };
   
@@ -410,7 +422,7 @@ const HomeClient: React.FC = () => {
                                   </div>
                                   <input
                                     placeholder="편안한 분위기에 책 종류가 많은 책방을 추천해줘"
-                                    className="w-full p-3 px-4 rounded-2xl text-[16px] font-[300] bg-transparent border-2 border-green-800 focus:border-green-800"
+                                    className="w-full p-3 px-4 rounded-2xl text-[16px] font-[300] bg-transparent border-2 border-[#36823a] focus:border-[#36823a]"
                                     value={inputValue}
                                     onChange={(e) =>
                                       setInputValue(e.target.value)
@@ -429,7 +441,7 @@ const HomeClient: React.FC = () => {
                                       onClick={() => toggleCategory(category)}
                                       className={`px-2 py-1 ${
                                         selectedCategories.includes(category)
-                                          ? "bg-green-700 text-gray-100 special-shadow-button"
+                                          ? "bg-[#36823a] text-gray-100 special-shadow-button"
                                           : "bg-gray-100 text-gray-900 special-toggle"
                                       } rounded-lg text-[14px] z-10`}
                                       initial={{ opacity: 0, y: 20 }}
