@@ -76,7 +76,7 @@ const NetflixStyleSlider: React.FC<NetflixStyleSliderProps> = ({ personalizedRec
   useEffect(() => {
     if (sliderRef.current) {
       const offset = isSwiping ? swipeOffset : 0;
-      sliderRef.current.style.transform = `translateX(calc(-${currentIndex * 100}% + ${offset}px))`;
+      sliderRef.current.style.transform = `translateX(calc(-${currentIndex * 100}vw + ${offset}px))`;
     }
   }, [currentIndex, isSwiping, swipeOffset]);
 
@@ -92,8 +92,9 @@ const NetflixStyleSlider: React.FC<NetflixStyleSliderProps> = ({ personalizedRec
   }, [personalizedRecommendations, imageSrc]);
 
   return (
-    <div className="relative overflow-hidden mx-auto w-[90%] md:w-[80%]" data-uia="nmhp-top-10">
-      <div className="relative" {...handlers}>
+    <div className=''>
+    <div className="relative overflow-hidden w-[90vw] md:w-[80vw] mx-auto " data-uia="nmhp-top-10">
+      <div className="relative " {...handlers}>
         <button
           onClick={prevSlide}
           className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-green-700 bg-opacity-50 text-white p-2 rounded-full"
@@ -103,7 +104,7 @@ const NetflixStyleSlider: React.FC<NetflixStyleSliderProps> = ({ personalizedRec
         </button>
         <button
           onClick={nextSlide}
-          className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-green-900 bg-opacity-50 text-white p-2 rounded-full"
+          className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-green-900 bg-opacity-50 text-white p-2 rounded-full "
           disabled={currentIndex === personalizedRecommendations.length - 1}
         >
           <FaArrowRight size={24} />
@@ -111,12 +112,13 @@ const NetflixStyleSlider: React.FC<NetflixStyleSliderProps> = ({ personalizedRec
         <div
           ref={sliderRef}
           className="flex transition-transform duration-300 ease-in-out"
-          style={{ width: `${personalizedRecommendations.length * 100}%` }}
+          style={{ width: `${personalizedRecommendations.length * 100}vw` }}
         >
+          <div className='flex '>
           {personalizedRecommendations.map((id, index) => {
             const facilityInfo = getFacilityInfo(id);
             return (
-              <div key={index} className="flex-shrink-0 px-2">
+              <div key={index} className="flex-shrink-0 w-[300px] mx-4">
                 <div 
                   className="relative rounded-2xl overflow-hidden pointer-events-none border-[#29bc29] border-opacity-50 border-[6px]"
                   style={{
@@ -126,7 +128,7 @@ const NetflixStyleSlider: React.FC<NetflixStyleSliderProps> = ({ personalizedRec
                   <img
                     src={randomImages[index]}
                     alt={facilityInfo.name || "책방 이미지"}
-                    className="w-[300px] h-[250px] object-cover brightness-200"
+                    className="w-full h-[250px] object-cover brightness-200"
                     style={{
                       filter: 'grayscale(50%)',
                     }}
@@ -143,6 +145,8 @@ const NetflixStyleSlider: React.FC<NetflixStyleSliderProps> = ({ personalizedRec
               </div>
             );
           })}
+  </div>
+
         </div>
       </div>
       <div className="flex justify-center mt-4">
@@ -155,6 +159,9 @@ const NetflixStyleSlider: React.FC<NetflixStyleSliderProps> = ({ personalizedRec
         ))}
       </div>
     </div>
+
+
+</div>
   );
 };
 
