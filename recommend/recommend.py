@@ -1,10 +1,16 @@
+import logging
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import boto3
 import re
+import traceback
 
 app = Flask(__name__)
 CORS(app)
+
+# 로깅 설정
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Bedrock Client 초기화.
 bedrock_agent_runtime = boto3.client('bedrock-agent-runtime', region_name='ap-northeast-1')
@@ -81,6 +87,7 @@ def retrieve_endpoint():
     modelArn = 'arn:aws:bedrock:ap-northeast-1::foundation-model/anthropic.claude-3-haiku-20240307-v1:0'  # 모델 ARN
     
     if not query:
+        logger.error("Query is missing in the request")
         return jsonify({"error": "Query is required"}), 400
 
     # 동적으로 출력 형식 생성
@@ -130,27 +137,33 @@ def retrieve_endpoint():
     
     try:
         if(isKeyword == "True"):
+            logger.info(f"Processing keyword query: {query}")
             response = retrieve_and_generate_keyword(query, kbId, modelArn, numberOfResults, keywordPromptTemplate)
         else:
+            logger.info(f"Processing regular query: {query}")
             response = retrieve_and_generate_query(query, kbId, modelArn, numberOfResults, queryPromptTemplate)
-        # 텍스트 출력을 파싱하여 JSON 형식으로 변환
+        
         output = response.get("output", {}).get("text", "")
+        logger.info(f"Raw output: {output}")
+        
         bookstores = parse_bookstore_info(output)
         
-        if bookstores != False:
-            print(bookstores)
+        if bookstores:
+            logger.info(f"Found bookstores: {bookstores}")
             return jsonify(bookstores), 200, {'Content-Type': 'application/json'}
         else:
-            print('error : 책방을 찾을 수 없습니다.')
+            logger.warning("No bookstores found")
             return jsonify({"message": "null"}), 200, {'Content-Type': 'application/json'}
     except Exception as e:
+        logger.error(f"An error occurred: {str(e)}")
+        logger.error(traceback.format_exc())
         return jsonify({"error": str(e)}), 500
 
 @app.route('/health', methods=['GET'])
 def health_check():
+    logger.info("Health check requested")
     return jsonify({"status": "healthy", "message": "The application is running normally"}), 200
-    
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000)
 
-#this is just test!
+if __name__ == "__main__":
+    logger.info("Starting the application")
+    app.run(host='0.0.0.0', port=5000)
