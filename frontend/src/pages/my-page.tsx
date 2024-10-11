@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { BiSolidUser } from "react-icons/bi";
 import { NavComponent } from "../components/nav";
 import { useAuth } from "../hooks/useAuth";
-import axios from "axios";
 
 interface UserInfo {
   username: string;
@@ -35,41 +35,55 @@ const instance_th = axios.create({
   baseURL: "https://www.linkedbook.shop/",
 });
 
+
 const MyPage: React.FC = () => {
   const { isLoggedIn, userInfo, logout } = useMyPage();
 
   const [reservations, setReservations] = useState<any[]>([]);
   const [activeTab, setActiveTab] = useState<'payment' | 'reservations' | 'map'>('reservations');
 
-  const MyPageFunction = async (myData: string) => {
+  const MyPageFunction = async () => {
     const myUrl = `/mypage`;
+    const customerEmail = userInfo?.email || "사용자 이메일 주소";
+    
+    console.log("User Info:", userInfo);
+    console.log("Customer Email:", customerEmail);
+
     try {
       const response = await instance_th.get(myUrl, {
         params: {
-          customer: myData,
+          customer: customerEmail,
         },
         headers: { "Content-Type": "application/json" },
       });
 
+      console.log("Request Config:", response.config);
+      console.log("Response:", response.data);
+
       const result = response.data;
-      console.log(result);
       setReservations(result);
     } catch (error) {
       console.error("Error occurred:", error);
+      if (axios.isAxiosError(error)) {
+        console.error("Request that caused the error:", error.config);
+        console.error("Response from server:", error.response);
+      }
     }
   };
 
   useEffect(() => {
-    const myData = userInfo ? userInfo.email : "사용자 이메일 주소";
-    console.log(myData + 'test')
-    MyPageFunction(myData);
+    if (userInfo) {
+      MyPageFunction();
+    }
   }, [userInfo]);
+
+
 
   const renderContent = () => {
     switch (activeTab) {
-      case 'payment':
+      case "payment":
         return <p>결제내역 내용이 여기에 표시됩니다.</p>;
-      case 'reservations':
+      case "reservations":
         return (
           <div className="p-4 w-full">
             <h3 className="text-lg font-bold mt-0">예약 확인</h3>
@@ -97,7 +111,7 @@ const MyPage: React.FC = () => {
             )}
           </div>
         );
-      case 'map':
+      case "map":
         return <p>별지도 내용이 여기에 표시됩니다.</p>;
       default:
         return null;
@@ -120,16 +134,20 @@ const MyPage: React.FC = () => {
             <div className="flex ml-4 gap-4">
               <BiSolidUser className="text-9xl rounded-full bg-white w-30 h-30" />
               <div className="flex-col items-top">
-                <h2 style={{ fontSize: "clamp(2rem, 2.5vw, 3rem)" }}>{userInfo ? userInfo.username : "사용자 이름"}</h2>
-                <h3 style={{ fontSize: "clamp(1rem, 1.7vw, 1.2rem)" }}>{userInfo ? userInfo.email : "정보 없음"}</h3>
+                <h2 style={{ fontSize: "clamp(2rem, 2.5vw, 3rem)" }}>
+                  {userInfo ? userInfo.username : "사용자 이름"}
+                </h2>
+                <h3 style={{ fontSize: "clamp(1rem, 1.7vw, 1.2rem)" }}>
+                  {userInfo ? userInfo.email : "정보 없음"}
+                </h3>
               </div>
             </div>
             <div className="bg-white w-full min-h-80 rounded-2xl divide-x divide-gray-200 flex">
               <ul className="flex-col min-w-[15vw] md:w-[20vw]">
                 <li>
-                  <button 
-                    className="py-2 text-center w-full h-full flex items-center justify-center rounded-2xl" 
-                    onClick={() => setActiveTab('payment')}
+                  <button
+                    className="py-2 text-center w-full h-full flex items-center justify-center rounded-2xl"
+                    onClick={() => setActiveTab("payment")}
                   >
                     <h2
                       className="flex"
@@ -140,9 +158,9 @@ const MyPage: React.FC = () => {
                   </button>
                 </li>
                 <li>
-                  <button 
-                    className="py-2 text-center w-full h-full flex items-center justify-center rounded-2xl" 
-                    onClick={() => setActiveTab('reservations')}
+                  <button
+                    className="py-2 text-center w-full h-full flex items-center justify-center rounded-2xl"
+                    onClick={() => setActiveTab("reservations")}
                   >
                     <h2
                       className="flex"
@@ -153,9 +171,9 @@ const MyPage: React.FC = () => {
                   </button>
                 </li>
                 <li>
-                  <button 
-                    className="py-2 text-center w-full h-full flex items-center justify-center rounded-2xl bg-green-100" 
-                    onClick={() => setActiveTab('map')}
+                  <button
+                    className="py-2 text-center w-full h-full flex items-center justify-center rounded-2xl bg-green-100"
+                    onClick={() => setActiveTab("map")}
                   >
                     <h2
                       className="flex"
