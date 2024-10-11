@@ -262,7 +262,7 @@ export const KakaoMap: React.FC<KakaoMapProps> = ({ className, latitude, longitu
 
     return (
       <div>
-      <main className="w-full flex flex-col items-left z-10">
+      <main className="w-full flex flex-col items-left z-10 relative overflow-hidden">
         <button
           onClick={goToUserLocation}
           className="absolute bottom-40 right-4 px-2 py-2 bg-blue-500 hover:bg-blue-400 z-50 text-white rounded text-2xl"
