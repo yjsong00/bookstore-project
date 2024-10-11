@@ -138,8 +138,10 @@ def retrieve_endpoint():
         bookstores = parse_bookstore_info(output)
         
         if bookstores != False:
+            print(bookstores)
             return jsonify(bookstores), 200, {'Content-Type': 'application/json'}
         else:
+            print('error : 책방을 찾을 수 없습니다.')
             return jsonify({"message": "null"}), 200, {'Content-Type': 'application/json'}
     except Exception as e:
         return jsonify({"error": str(e)}), 500
