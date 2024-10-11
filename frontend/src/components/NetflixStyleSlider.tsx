@@ -118,7 +118,7 @@ const NetflixStyleSlider: React.FC<NetflixStyleSliderProps> = ({ personalizedRec
             return (
               <div key={index} className="flex-shrink-0 px-2">
                 <div 
-                  className="relative rounded-2xl overflow-hidden pointer-events-none border-[#3eb6bf] border-opacity-50 border-[6px]"
+                  className="relative rounded-2xl overflow-hidden pointer-events-none border-[#29bc29] border-opacity-50 border-[6px]"
                   style={{
                     boxShadow: '8px 8px 16px #bcbcbcb0, -8px -8px 16px #fffdf7'
                   }}
