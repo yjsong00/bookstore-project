@@ -1,5 +1,5 @@
 import "../app/globals.css";
-
+import Head from 'next/head';
 import { useState, useEffect, useCallback } from 'react'
 import { BiCalendar } from "react-icons/bi"
 import Search from "../components/Search"
@@ -89,7 +89,11 @@ const App: React.FC = () => {
 
   return (
     <>
-      
+            <Head>
+        <title>linkedbook</title>
+        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+
+      </Head>
 
 <NavComponent className="fixed z-[9999] mt-[-62px]" isLoggedIn={isLoggedIn} username={userInfo ? userInfo.username : ''} logout={logout}/>
     <div className="w-[95%] md:w-[80%] mx-auto mt-[62px] font-thin">

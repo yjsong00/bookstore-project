@@ -4,6 +4,7 @@ import { BiCurrentLocation, BiChevronUp, BiChevronDown } from "react-icons/bi";
 import "./../app/globals.css";
 import Search from "./../components/Search";
 import BookstoreInfo2 from "./../components/bookstorelist2";
+import Head from 'next/head';
 
 declare global {
   interface Window {

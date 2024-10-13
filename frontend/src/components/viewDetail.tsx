@@ -4,6 +4,7 @@ import { Bookstore } from "../pages/app";
 import { KakaoMap } from "../components/kakao2";
 import { AiOutlineClose } from "react-icons/ai";
 import { useAuth } from "../hooks/useAuth";
+import Head from 'next/head';
 
 type ViewDetailPageProps = {
   bookstores: Bookstore;

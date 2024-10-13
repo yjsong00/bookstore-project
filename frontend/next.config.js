@@ -12,8 +12,8 @@ const nextConfig = {
   // async redirects() {
   //   return [
   //     {
-  //       source: "/map",
-  //       destination: "/map/", // redirecting to /map/index
+  //       source: "/map/index.html",
+  //       destination: "/map", // redirecting to /map/index
   //       permanent: true, // This makes it a 308 permanent redirect
   //     },
   //   ];
