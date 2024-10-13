@@ -1,15 +1,17 @@
 "use client";
-import "./../app/globals.css";
+// import { Html, Head, Main, NextScript } from 'next/document'
+import Head from "next/head";
+ import "./../app/globals.css";
 import Script from "next/script";
 import axios from "axios";
-import { NavComponent } from "./../components/nav";
-import { useAuth } from "./../hooks/useAuth";
+import { NavComponent } from "../components/nav";
+import { useAuth } from "../hooks/useAuth";
 import React, { useState, useEffect, useRef } from "react";
 import { BiSearch } from "react-icons/bi";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bookstore } from "../pages/app";
-import BookstoreListSkeleton from "./../components/BookstoreListSkeleton";
-import Gradient from "./../components/gradient";
+import BookstoreListSkeleton from "../components/BookstoreListSkeleton";
+import Gradient from "../components/gradient";
 import NetflixStyleSlider from "../components/NetflixStyleSlider";
 import BookstoreInfo from "../components/bookstorelist";
 import ViewDetailPage from "../components/viewDetail";
@@ -39,6 +41,14 @@ const HomeClient: React.FC = () => {
   const [imageSrc, setImageSrc] = useState<string[]>([]); // 배열로 변경
 
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
+
 
   const categories = [
     "모임",
@@ -324,6 +334,11 @@ const HomeClient: React.FC = () => {
 
   return (
     <>
+        <Head>
+        <title>linkedbook</title>
+        
+        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+      </Head>
       <Script id="jennifer-inline-script" strategy="lazyOnload">
         {`
           (function(j, ennifer) {
@@ -427,6 +442,7 @@ const HomeClient: React.FC = () => {
                                     onChange={(e) =>
                                       setInputValue(e.target.value)
                                     }
+                                    onKeyPress={handleKeyPress}
                                   />
                                 </div>
                                 <motion.div
@@ -585,7 +601,7 @@ const HomeClient: React.FC = () => {
           </div>
         </div>
       </main>
-    </>
+      </>
   );
 };
 

@@ -3,6 +3,9 @@ import axios from "axios";
 import { BiSolidUser } from "react-icons/bi";
 import { NavComponent } from "../components/nav";
 import { useAuth } from "../hooks/useAuth";
+import Head from 'next/head';
+
+
 
 interface UserInfo {
   username: string;
@@ -120,6 +123,10 @@ const MyPage: React.FC = () => {
 
   return (
     <>
+          <Head>
+        <title>linkedbook</title>
+        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+      </Head>
       <main>
         <NavComponent
           isLoggedIn={isLoggedIn}
