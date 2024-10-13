@@ -51,45 +51,45 @@ const DropDown: React.FC<DropDownProps> = ({ toggle, sortBy, onSortByChange, ord
   )
 }
 
-const Search: React.FC<SearchProps> = ({ className, query, onQueryChange, sortBy, onSortByChange, orderBy, onOrderByChange, toggleShow}) => {
-  let [toggleSort, setToggleSort] = useState(false)
+    const Search: React.FC<SearchProps> = ({ className, query, onQueryChange, sortBy, onSortByChange, orderBy, onOrderByChange, toggleShow}) => {
+      let [toggleSort, setToggleSort] = useState(false)
 
-  return (
-    <div className={className}>
-    <div className="py-5">
-      <div className="mt-1 relative">
-        <div className="absolute pt-2 left-0 pl-3 flex items-center pointer-events-none">
-          {/* <BiSearch /> */}
-          <label htmlFor="query" className="sr-only" />
-        </div>
-        <input type="text" name="query" id="query" value={query}
-          onChange={(event) => { onQueryChange(event.target.value) }}
-          className=" search-container rounded-2xl focus:ring-green-100 block w-full sm:text-md border-gray-300 border-b border-gray-200 focus:ring-2
-          " />
-        <div className="absolute inset-y-0 right-0 flex items-center">
-          {/* <div className="">
-          <button className="px-4 py-1 special-shadow rounded-2xl">
-             AI에게 물어보기
-          </button>
-          </div> */}
-          <div>
+      return (
+        <div className={className}>     
+        <div className="py-5">
+          <div className="mt-1 relative">
+            <div className="absolute pt-2 left-0 pl-3 flex items-center pointer-events-none">
+              {/* <BiSearch /> */}
+              <label htmlFor="query" className="sr-only" />
+            </div>
+            <input type="text" name="query" id="query" value={query} style={{ cursor: 'text' }}
+              onChange={(event) => { onQueryChange(event.target.value) }}
+              className=" search-container rounded-2xl focus:ring-green-100 block w-full sm:text-md border-gray-300 border-b border-gray-200 focus:ring-2 
+              " />
+            <div className="absolute inset-y-0 right-0 flex items-center">
+              {/* <div className="">
+              <button className="px-4 py-1 special-shadow rounded-2xl">   
+                AI에게 물어보기
+              </button>
+              </div> */}
+              <div>
 
-            <button type="button" onClick={() => { setToggleSort(!toggleSort) }}
-              className={`${toggleShow === true ? 'flex' : 'hidden'} justify-center px-2 py-1 rounded-2xl bg-blue-400 border-2 border-blue-400 text-sm text-white hover:bg-blue-700 focus:outline-none focus:ring-2   items-center`} id="options-menu" aria-haspopup="true" aria-expanded="true">
-              Sort By <BiCaretDown className="ml-2" />
-            </button>
-            <DropDown toggle={toggleSort}
-              sortBy={sortBy}
-              onSortByChange={onSortByChange}   
-              orderBy={orderBy}
-              onOrderByChange={onOrderByChange}
-            />
+                <button type="button" onClick={() => { setToggleSort(!toggleSort) }}
+                  className={`${toggleShow === true ? 'flex' : 'hidden'} justify-center px-2 py-1 rounded-2xl bg-blue-400 border-2 border-blue-400 text-sm text-white hover:bg-blue-700 focus:outline-none focus:ring-2   items-center`} id="options-menu" aria-haspopup="true" aria-expanded="true">
+                  Sort By <BiCaretDown className="ml-2" />
+                </button>
+                <DropDown toggle={toggleSort}
+                  sortBy={sortBy}
+                  onSortByChange={onSortByChange}   
+                  orderBy={orderBy}
+                  onOrderByChange={onOrderByChange}
+                />
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-    </div>
-  )
-}
+        </div>
+      )
+    }
 
 export default Search

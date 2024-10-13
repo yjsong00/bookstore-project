@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-
+import Head from 'next/head';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { date, bookstore } = req.query;
 

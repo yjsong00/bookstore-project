@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 
 import { KakaoMap } from "../components/kakao2";
 import { NavComponent } from "../components/nav";
-
+import Head from 'next/head';
 import React, { useState } from "react";
 import { useAuth } from '../hooks/useAuth';
 
@@ -19,6 +19,12 @@ const Start: React.FC = () => {
 
   return (
     <>
+          <Head>
+        <title>linkedbook</title>
+        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+
+
+      </Head>
       <main className="w-full flex flex-col items-center justify-center mt-8 bg-white">
       <NavComponent className="fixed z-50" isLoggedIn={isLoggedIn} logout={logout} username={userInfo ? userInfo.username : ''}/>
 
