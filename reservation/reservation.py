@@ -199,7 +199,7 @@ def reservations():
 
          # AWS Personalize 이벤트 로깅
         try:
-            personalize_events = boto3.client('personalize-events', 'ap-northeast-2')
+            personalize_events = boto3.client('personalize-events', 'ap-northeast-1')
 
             # 이벤트 전송
             personalize_events.put_events(
