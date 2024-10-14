@@ -6,9 +6,9 @@ CORS(app)
 # Amazon Personalize 클라이언트 생성
 personalize_runtime = boto3.client('personalize-runtime', region_name='ap-northeast-2')
 # 두 캠페인의 ARN
-user_personalization_campaign_arn = 'arn:aws:personalize:ap-northeast-2:178020491921:campaign/user-cam'
-personalized_ranking_campaign_arn = 'arn:aws:personalize:ap-northeast-2:178020491921:campaign/personalize-cam'
-popularity_campaign_arn = 'arn:aws:personalize:ap-northeast-2:178020491921:campaign/populartiy-cam'
+user_personalization_campaign_arn = 'arn:aws:personalize:ap-northeast-2:178020491921:campaign/user-personalize-cam'
+personalized_ranking_campaign_arn = 'arn:aws:personalize:ap-northeast-2:178020491921:campaign/personalizedranking-cam'
+popularity_campaign_arn = 'arn:aws:personalize:ap-northeast-2:178020491921:campaign/popularity-cam'
 # 사용자 ID로 추천 아이템 가져오기 (User Personalization)
 def get_recommendations(user_id):
     response = personalize_runtime.get_recommendations(
