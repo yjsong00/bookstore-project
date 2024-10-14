@@ -204,7 +204,7 @@ def reservations():
 
             # 이벤트 전송
             personalize_events.put_events(
-                trackingId='88374bd6-c55c-4aff-a9db-aac160c47f97',  # 생성된 ID
+                trackingId='e84e33fd-20ac-4cb7-8fb3-2cc6e9fb4ab2',  # 생성된 ID
                 userId=customer,  # 사용자 ID
                 sessionId='session_id',  # 세션 ID (필요에 따라 설정)
                 eventList=[{
