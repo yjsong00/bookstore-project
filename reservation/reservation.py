@@ -199,7 +199,7 @@ def reservations():
 
          # AWS Personalize 이벤트 로깅
         try:
-            personalize_events = boto3.client('personalize-events', 'ap-northeast-1')
+            personalize_events = boto3.client('personalize-events', 'ap-northeast-2')
 
             # 이벤트 전송
             personalize_events.put_events(
@@ -216,7 +216,7 @@ def reservations():
                 }]
             )
         except Exception as e:
-            return jsonify({"error": f"Failed to log event: {str(e)}"}), 500
+            return jsonify({"error": f"Failed to log event: {str(e)}"}), 555
 
         return jsonify({"message": "Reservation created successfully, email notification sent, and event logged"}), 201
 
