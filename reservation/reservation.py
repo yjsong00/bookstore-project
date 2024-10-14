@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 import boto3
+import json
 from flask_cors import CORS  # CORS 모듈 추가
 from botocore.exceptions import BotoCoreError, ClientError
 from boto3.dynamodb.conditions import Key
